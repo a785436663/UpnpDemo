@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">UpnpDemo</string>
+
+    <string name="search_lan">Search LAN</string>
+    <string name="switch_router">Network On/Off</string>
+    <string name="toggle_debug_logging">Toggle debug logging</string>
+
+    <string name="searching_lan">Searching LAN for UPnP devices\u2026</string>
+    <string name="enabling_router">Enabling network router\u2026</string>
+    <string name="disabling_router">Disabling network router\u2026</string>
+    <string name="enabling_debug_logging">Enabling debug logging\u2026</string>
+    <string name="disabling_debug_logging">Disabling debug logging\u2026</string>
+
+    <string name="registering_demo_device">Registering UPnP dms device\u2026</string>
+    <string name="create_demo_failed">Creating of demo device failed, check the log!</string>
+
+</resources>
