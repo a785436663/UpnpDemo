@@ -218,7 +218,8 @@ public class BrowseActivity extends ListActivity {
 					}
 				});
 				try {
-					Log.e("----------", device.toString().indexOf("192.168.1.106")+"");
+					Log.e("----------",
+							device.toString().indexOf("192.168.1.106") + "");
 				} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
@@ -277,7 +278,9 @@ public class BrowseActivity extends ListActivity {
 		public String toString() {
 			String name = (device.getDetails() != null
 					&& device.getDetails().getFriendlyName() != null ? device
-					.getDetails().getFriendlyName() : device.getDisplayString())+"\n是否包含192.168.1.106"+(device.toString().indexOf("192.168.1.106")>0);
+					.getDetails().getFriendlyName() : device.getDisplayString())
+					+ "\n是否包含192.168.1.106"
+					+ (device.toString().indexOf("192.168.1.106") > 0);
 			// Display a little star while the device is being loaded (see
 			// performance optimization earlier)
 			return device.isFullyHydrated() ? name : name + " *";
