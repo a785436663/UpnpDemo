@@ -12,8 +12,6 @@ import org.teleal.cling.registry.DefaultRegistryListener;
 import org.teleal.cling.registry.Registry;
 import org.teleal.cling.transport.SwitchableRouter;
 
-import com.cvte.upnp.dmc.PlayerActivity;
-
 import android.app.ListActivity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -28,6 +26,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.cvte.upnp.dmc.PlayerActivity;
 
 public class BrowseActivity extends ListActivity {
 	private final String DMS = "MediaServer";
@@ -218,7 +218,7 @@ public class BrowseActivity extends ListActivity {
 					}
 				});
 				try {
-					Log.e("----------", device.toString()+"");
+					Log.e("----------", device.toString().indexOf("192.168.1.106")+"");
 				} catch (Exception e) {
 					// TODO: handle exception
 					e.printStackTrace();
@@ -275,9 +275,9 @@ public class BrowseActivity extends ListActivity {
 
 		@Override
 		public String toString() {
-			String name = device.getDetails() != null
+			String name = (device.getDetails() != null
 					&& device.getDetails().getFriendlyName() != null ? device
-					.getDetails().getFriendlyName() : device.getDisplayString();
+					.getDetails().getFriendlyName() : device.getDisplayString())+"\n是否包含192.168.1.106"+(device.toString().indexOf("192.168.1.106")>0);
 			// Display a little star while the device is being loaded (see
 			// performance optimization earlier)
 			return device.isFullyHydrated() ? name : name + " *";
