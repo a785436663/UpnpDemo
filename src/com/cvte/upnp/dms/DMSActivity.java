@@ -1,6 +1,8 @@
 package com.cvte.upnp.dms;
 
+import java.io.StringWriter;
 import java.net.InetAddress;
+import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.teleal.cling.android.AndroidUpnpService;
+import org.teleal.cling.support.contentdirectory.DIDLParser;
+import org.teleal.cling.support.model.DIDLContent;
 import org.teleal.cling.support.model.DIDLObject;
+import org.teleal.cling.support.model.DescMeta;
 import org.teleal.cling.support.model.MediaInfo;
 import org.teleal.cling.support.model.PersonWithRole;
 import org.teleal.cling.support.model.PositionInfo;
@@ -21,6 +26,8 @@ import org.teleal.cling.support.model.item.Item;
 import org.teleal.cling.support.model.item.MusicTrack;
 import org.teleal.cling.support.model.item.VideoItem;
 import org.teleal.common.util.MimeType;
+import org.xml.sax.Attributes;
+import org.xmlpull.v1.XmlSerializer;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -34,6 +41,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Xml;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -112,7 +120,7 @@ public class DMSActivity extends Activity implements OnItemClickListener,
 	}
 
 	String uri;
-	String Title;
+	String title;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -154,21 +162,27 @@ public class DMSActivity extends Activity implements OnItemClickListener,
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				if (BrowseActivity.device != null) {
-					uri = "http://" + mediaServer.getAddress() + "/"
-							+ contentItem.get(position).getId();
-					Title = contentItem.get(position).getTitle();
-					CoshipAvtransprot
-							.mediaRemendersetAVTransportURI(upnpService,
-									BrowseActivity.device, uri, contentItem
-											.get(position).getRefID(),
-									contentItem.get(position).getTitle(),
-									DMSActivity.this);
-					CoshipAvtransprot.GetDmrTransportInfo(upnpService,
-							BrowseActivity.device,null);
+				try {
+					if (BrowseActivity.device != null) {
+						uri = "http://" + mediaServer.getAddress() + "/"
+								+ contentItem.get(position).getId();
+						title = contentItem.get(position).getTitle();
+						DIDLContent didl = new DIDLContent();
+						didl.addItem(contentItem.get(position));
+						String meta = new DIDLParser().generate(didl);
+						CoshipAvtransprot.mediaRemendersetAVTransportURI(
+								upnpService, BrowseActivity.device, uri, meta,
+								contentItem.get(position).getTitle(),
+								DMSActivity.this);
+						CoshipAvtransprot.GetDmrTransportInfo(upnpService,
+								BrowseActivity.device, null);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
 				}
 			}
 		});
+
 		getApplicationContext().bindService(
 				new Intent(this, BrowserUpnpService.class), serviceConnection,
 				Context.BIND_AUTO_CREATE);
@@ -388,6 +402,18 @@ public class DMSActivity extends Activity implements OnItemClickListener,
 		listV1.setAdapter(adapter1);
 	}
 
+	protected DescMeta createDescMeta(Attributes attributes) {
+		DescMeta desc = new DescMeta();
+		desc.setId(attributes.getValue("id"));
+		if ((attributes.getValue("type") != null))
+			desc.setType(attributes.getValue("type"));
+		if ((attributes.getValue("nameSpace") != null))
+			desc.setNameSpace(URI.create(attributes.getValue("nameSpace")));
+		if ((attributes.getValue("duration") != null))
+			desc.setNameSpace(URI.create(attributes.getValue("duration")));
+		return desc;
+	}
+
 	// FIXME: now only can get wifi address
 	private InetAddress getLocalIpAddress() throws UnknownHostException {
 		WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
@@ -410,8 +436,8 @@ public class DMSActivity extends Activity implements OnItemClickListener,
 	public void fail(String f) {
 		// TODO Auto-generated method stub
 		if (f.equals("设置URI失败")) {
-			CoshipAvtransprot.mediaRemenderstop(upnpService, BrowseActivity.device,
-					this);
+			CoshipAvtransprot.mediaRemenderstop(upnpService,
+					BrowseActivity.device, this);
 		}
 	}
 
@@ -421,12 +447,11 @@ public class DMSActivity extends Activity implements OnItemClickListener,
 
 	}
 
-
 	@Override
 	public void mediarenderstopsuccess() {
 		// TODO Auto-generated method stub
 		CoshipAvtransprot.mediaRemendersetAVTransportURI(upnpService,
-				BrowseActivity.device, uri, "0", Title, DMSActivity.this);
+				BrowseActivity.device, uri, "0", title, DMSActivity.this);
 	}
 
 	@Override
@@ -441,7 +466,6 @@ public class DMSActivity extends Activity implements OnItemClickListener,
 
 	}
 
-
 	@Override
 	public void getVolumeSuccess(int volume) {
 		// TODO Auto-generated method stub
@@ -451,19 +475,19 @@ public class DMSActivity extends Activity implements OnItemClickListener,
 	@Override
 	public void getmediarenderposinfosuccess(PositionInfo positionInfo) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void getmediarendermediainfosuccess(MediaInfo mediaInfo) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void getTransportInfoSuccess(TransportInfo transportInfo) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

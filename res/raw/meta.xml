@@ -1,0 +1,29 @@
+<DIDL-Lite xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:dlna="urn:schemas-dlna-org:metadata-1-0/"
+    xmlns:sec="http://www.sec.co.kr/"
+    xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/" >
+    <item
+        id="filePath"
+        parentID="0"
+        restricted="1">
+        <upnp:class>
+object.item.imageItem        </upnp:class>
+        <dc:title>
+IMAG1466        </dc:title>
+        <dc:creator>
+Unknown Artist        </dc:creator>
+        <upnp:artist>
+Unknown Artist        </upnp:artist>
+        <upnp:albumArtURI>
+http://192.168.1.190:8192/audio-item-10
+        </upnp:albumArtURI>
+        <upnp:album>
+Unknown Album        </upnp:album>
+        <res
+            xmlns:dlna="urn:schemas-dlna-org:metadata-1-0/"
+            protocolInfo="http-get:*:audio/L16;rate=48000;channels=2:DLNA.ORG_PN=LPCM;DLNA.ORG_OP=01"
+            size="9223372034707292159" >
+http://192.168.1.190:8192/audio-item-10        </res>
+    </item>
+</DIDL-Lite>

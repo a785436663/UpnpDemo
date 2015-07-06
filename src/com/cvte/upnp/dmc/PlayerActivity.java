@@ -254,8 +254,15 @@ public class PlayerActivity extends Activity implements OnClickListener,
 	}
 
 	@Override
-	public void fail(String info) {
+	public void fail(final String info) {
 		// TODO Auto-generated method stub
-		Toast.makeText(this, info, Toast.LENGTH_LONG).show();
+		runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				Toast.makeText(PlayerActivity.this, info, Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 }

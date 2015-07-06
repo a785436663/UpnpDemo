@@ -22,13 +22,22 @@ import org.teleal.cling.support.avtransport.callback.Play;
 import org.teleal.cling.support.avtransport.callback.Seek;
 import org.teleal.cling.support.avtransport.callback.SetAVTransportURI;
 import org.teleal.cling.support.avtransport.callback.Stop;
+import org.teleal.cling.support.contentdirectory.DIDLParser;
+import org.teleal.cling.support.model.DIDLContent;
 import org.teleal.cling.support.model.MediaInfo;
+import org.teleal.cling.support.model.PersonWithRole;
 import org.teleal.cling.support.model.PositionInfo;
+import org.teleal.cling.support.model.ProtocolInfo;
+import org.teleal.cling.support.model.Res;
 import org.teleal.cling.support.model.TransportInfo;
+import org.teleal.cling.support.model.item.MusicTrack;
 import org.teleal.cling.support.renderingcontrol.callback.GetMute;
 import org.teleal.cling.support.renderingcontrol.callback.GetVolume;
 import org.teleal.cling.support.renderingcontrol.callback.SetMute;
 import org.teleal.cling.support.renderingcontrol.callback.SetVolume;
+import org.teleal.common.util.MimeType;
+
+import android.provider.MediaStore;
 
 public class CoshipAvtransprot {
 	/***********************************************************
@@ -40,16 +49,16 @@ public class CoshipAvtransprot {
 	public static void mediaRemendersetAVTransportURI(
 			AndroidUpnpService upnpService,
 			@SuppressWarnings("rawtypes") Device device, final String Uri,
-			final String Brows, final String Title,
+			final String meta, final String Title,
 			final GetCoshipavtransportstate getavtransport) {
 		if (device == null)
 			return;
 		@SuppressWarnings("rawtypes")
 		Service service = device.findService(new UDAServiceId("AVTransport"));
 		System.out.println("设置URI---" + Uri);
-		try {
+		try {			
 			ActionCallback setAVTransportURIAction = new SetAVTransportURI(
-					service, Uri, Brows) {
+					service, Uri, meta) {
 				@Override
 				public void success(
 						@SuppressWarnings("rawtypes") ActionInvocation invocation) {
@@ -544,7 +553,9 @@ public class CoshipAvtransprot {
 			public void failure(
 					@SuppressWarnings("rawtypes") ActionInvocation invocation,
 					UpnpResponse operation, String defaultMsg) {
-				getmediarenderinfo.fail("获取当前DMR设备状态失败");
+				if (getmediarenderinfo!=null) {
+					getmediarenderinfo.fail("获取当前DMR设备状态失败");
+				}
 			}
 		};
 		upnpService.getControlPoint().execute(getTransportInfo);

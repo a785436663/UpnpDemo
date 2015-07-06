@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cvte.upnp.demo">
+    package="com.cvte.upnp.demo" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-sdk android:minSdkVersion="8"
+    <uses-sdk
+        android:minSdkVersion="8"
         android:targetSdkVersion="17" />
 
-    <application android:name=".UpnpBrowserApp" 
+    <application
+        android:name=".UpnpBrowserApp"
         android:icon="@drawable/appicon"
-        android:label="@string/app_name">
-        <activity android:name=".MainActivity"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden">
+        android:label="@string/app_name" >
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".BrowseActivity" />
+        <activity android:name="com.cvte.upnp.dms.DMSActivity" />
+        <activity android:name=".BrowseDeviceActivity" />
+        <activity android:name="com.cvte.upnp.dmc.PlayerActivity" />
 
-        <activity android:name=".BrowseActivity"/>
-        <activity android:name="com.cvte.upnp.dms.DMSActivity"/>
-        <activity android:name=".BrowseDeviceActivity"/>
-        <activity android:name="com.cvte.upnp.dmc.PlayerActivity"/>
-        <service android:name=".BrowserUpnpService"/>
+        <service android:name=".BrowserUpnpService" />
     </application>
 
 </manifest>
